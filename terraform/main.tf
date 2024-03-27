@@ -7,4 +7,5 @@ module "eventbridge_dynamodb_sqs" {
   rule_name         = var.rule_name
   dynamodb_table_arn = var.dynamodb_table_arn
   sqs_queue_arn     = var.sqs_queue_arn
+  event_pipe_name = var.event_pipe_name
 }

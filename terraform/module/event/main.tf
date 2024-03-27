@@ -17,3 +17,19 @@ resource "aws_cloudwatch_event_target" "sqs_target" {
   arn      = var.sqs_queue_arn
   target_id = "sqs-target"
 }
+
+resource "aws_cloudformation_stack" "eventbridge_pipe_stack" {
+  name          = var.event_pipe_name
+  template_body = <<EOF
+Resources:
+  MyEventBridgeConnection:
+    Type: AWS::EventBridge::Connection
+    Properties:
+      AuthorizationType: API_KEY
+      AuthParameters:
+        ApiKeyAuthParameters:
+          ApiKey: YOUR_API_KEY
+      Description: My EventBridge Connection
+      Name: ${var.event_pipe_name}
+EOF
+}

@@ -21,3 +21,8 @@ variable "sqs_queue_arn" {
   description = "ARN the SQS queue"
   type        = string
 }
+
+variable "event_pipe_name" {
+  description = "Name of the EventBridge pipe"
+  type        = string
+}
