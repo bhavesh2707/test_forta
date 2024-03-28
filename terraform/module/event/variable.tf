@@ -22,3 +22,8 @@ variable "event_pipe_name" {
   description = "Name the eventpipe"
   type = string
 }
+
+variable "role_arn" {
+  description = "Enter the IAM role arn"
+  type = string
+}

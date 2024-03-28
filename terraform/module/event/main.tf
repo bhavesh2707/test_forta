@@ -18,18 +18,23 @@ resource "aws_cloudwatch_event_target" "sqs_target" {
   target_id = "sqs-target"
 }
 
-resource "aws_cloudformation_stack" "eventbridge_pipe_stack" {
-  name          = var.event_pipe_name
-  template_body = <<EOF
-Resources:
-  MyEventBridgeConnection:
-    Type: AWS::EventBridge::Connection
-    Properties:
-      AuthorizationType: API_KEY
-      AuthParameters:
-        ApiKeyAuthParameters:
-          ApiKey: YOUR_API_KEY
-      Description: My EventBridge Connection
-      Name: ${var.event_pipe_name}
-EOF
+resource "aws_pipes_pipe" "event_pipe_name" {
+  name       = var.event_pipe_name
+  role_arn   = var.role_arn
+  source     = aws_cloudwatch_event_rule.dynamodb_rule.arn
+  target     = aws_cloudwatch_event_target.sqs_target.arn
+  source_parameters {
+    filter_criteria {
+      filter {
+        pattern = jsonencode({
+          eventSource = ["aws:sqs"]
+        })
+      }
+      filter {
+        pattern = jsonencode({
+          eventSource = ["aws:dynamodb"]
+        })
+      }
+    }
+  }
 }

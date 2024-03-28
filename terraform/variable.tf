@@ -26,3 +26,8 @@ variable "event_pipe_name" {
   description = "Name of the EventBridge pipe"
   type        = string
 }
+
+variable "role_arn" {
+  description = "Enter the IAM role ARN"
+  type = string
+}
