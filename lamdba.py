@@ -2,6 +2,13 @@ import boto3
 import pymssql
 import json
 
+def execute_sql_file(cursor, sql_file_path):
+    with open(sql_file_path, 'r') as sql_file:
+        sql_statements = sql_file.read().split(';')
+        for sql_statement in sql_statements:
+            if sql_statement.strip():
+                cursor.execute(sql_statement)
+
 def lambda_handler(event, context):
     secrets_manager = boto3.client('secretsmanager')
     
@@ -20,8 +27,18 @@ def lambda_handler(event, context):
     new_database_name = "forta_dev_database"
     create_db_query = f"CREATE DATABASE {new_database_name}"
     cursor.execute(create_db_query)
-    conn.commit()
     
+    conn.commit()
+
+    cursor.execute(f"USE {new_database_name}")
+    
+    sql_schema_file_path = "Enter the path of schema sql file " 
+    execute_sql_file(cursor, sql_schema_file_path)
+    
+    sql_data_file_path = "enter the path of sql file" 
+    execute_sql_file(cursor, sql_data_file_path)
+
+    conn.commit()
     conn.close()
     
     return {
