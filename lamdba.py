@@ -32,9 +32,6 @@ def lambda_handler(event, context):
 
     cursor.execute(f"USE {new_database_name}")
     
-    sql_schema_file_path = "Enter the path of schema sql file " 
-    execute_sql_file(cursor, sql_schema_file_path)
-    
     sql_data_file_path = "enter the path of sql file" 
     execute_sql_file(cursor, sql_data_file_path)
 
